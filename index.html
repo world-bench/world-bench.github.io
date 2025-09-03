@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="WorldBench: How Close are World Models to the Physical World?">
+  <meta name="keywords" content="World Models, Physics Reasoning, Video Generation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WorldBench: How Close are World Models to the Physical World?</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+  rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<style>
+/* Custom styles */
+.demo-option {
+  min-width: 150px;
+  transition: all 0.3s ease;
+}
+
+.demo-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.video-container {
+  position: relative;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.video-wrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.tabs.is-boxed li.is-active a {
+  background-color: #3273dc;
+  border-color: #3273dc;
+  color: white;
+}
+
+.tabs.is-boxed li a {
+  border: 1px solid #dbdbdb;
+  border-radius: 4px 4px 0 0;
+}
+
+.tabs.is-boxed li a:hover {
+  background-color: #f5f5f5;
+  border-bottom-color: #dbdbdb;
+}
+
+.benchmark-video {
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.university-block {
+  margin-right: 14px;
+}
+
+.leaderboard-label {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: center;
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.js-sort-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.js-sort-table th,
+.js-sort-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.js-sort-table th {
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+
+.js-sort-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.js-sort-table tr:hover {
+  background-color: #f5f5f5;
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">WorldBench: How Close are World Models to the Physical World?</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="#">Rishi Upadhyay</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="#">Howard Zhang</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="#">Zhirong Lu</a><sup>1*</sup>,</span>
+            <span class="author-block">
+              <a href="#">Lakshman Sundaram</a><sup>1*</sup>,</span>
+            <span class="author-block">
+              <a href="#">Ayush Agrawal</a><sup>1*</sup>,</span>
+            <span class="author-block">
+              <a href="#">Yilin Wu</a><sup>1*</sup>,</span>
+            <span class="author-block">
+              <a href="#">Yunhao Ba</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="#">Alex Wong</a><sup>3</sup>,</span>
+            <span class="author-block">
+              <a href="#">Celso M de Melo</a><sup>4</sup>,</span>
+            <span class="author-block">
+              <a href="#">Achuta Kadambi</a><sup>1</sup>,</span>
+          </div>
+          
+          <div class="is-size-5 publication-authors">
+            <span class="university-block"><sup>1</sup>UCLA</span>
+            <span class="university-block"><sup>2</sup>Sony</span>
+            <span class="university-block"><sup>3</sup>Yale University</span>
+            <span class="university-block"><sup>4</sup>DEVCOM Army Research Laboratory</span>
+          </div>
+
+          <div class="is-size-6 publication-authors">
+            <span class="author-block">*Equal Contribution</span>
+          </div>
+
+          <div class="is-size-5 publication-authors" style="margin-top: 0.5rem;">
+            <span class="university-block" style="color: rgb(169, 16, 151);">Under Review</span>
+          </div>
+
+          <div class="publication-links" style="margin-top: 1rem;">
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/datasets/worldbenchmark/WorldBench" 
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-database"></i>
+                  </span>
+                  <span>Dataset</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#leaderboard"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon has-text-white">
+                    <i class="fa-solid fa-trophy"></i>
+                  </span>
+                  <span>Leaderboard</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TLDR Section -->
+<section class="section" style="margin-top: -4rem; margin-bottom: -0.5rem;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <div class="content">
+          <p style="font-size: 1.3rem; color: #363636; font-weight: 500;">
+            <span style="color: red; font-weight: 600;">TL;DR:</span> A comprehensive video-based benchmark that directly evaluates world models' ability to predict physical scene evolution across 425 scenarios spanning motion physics, object permanence, support relations, and scale/perspective.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="margin-top: -3rem;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+    </div>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-six-fifths">  
+            <img id="model" width="80%" src="./static/images/overview.png" alt="WorldBench Overview">
+            <div style="width: 100%; margin: 0 auto;">
+              <div class="content has-text-justified">
+                <p><b>WorldBench Evaluation Framework.</b> Our benchmark directly evaluates world models through video prediction. We provide initial frames to models like Cosmos and task them to generate continuations. The generated videos are then evaluated using segmentation masks from SAM2 compared against ground truth physics simulations, offering detailed assessment of physical understanding beyond simple binary outcomes.</p>
+              </div>
+            </div>   
+        </div>
+  </div>
+</section>
+
+<section class="section" style="margin-top: -2rem;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Recent advances in world modeling, such as the Cosmos foundation model, highlight the growing need for physically accurate representations of dynamic environments. Despite this ambition, existing evaluation benchmarks fall short of capturing the full complexity of physical interactions, often relying on discrete or binary proxy tasks like object contact prediction. We introduce <strong>WorldBench</strong>, a new video-based benchmark that directly evaluates a model's ability to predict the evolution of physical scenes over time. Our dataset comprises four physically rich scenarios (motion physics, object permanence, support relations, scale/perspective) with 425 total configurations that assess both visual fidelity and physical plausibility. We additionally add natural language to a subset of this dataset, allowing us to benchmark text-generation models as well. Evaluating on SOTA world foundation models, we find that all configurations lack the physical consistency required to generate reliable real-world interactions. Furthermore, evaluating SOTA vision-language models, we find that the best models perform only slightly better than chance, highlighting a need for better object tracking and temporal consistency.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-fifths">
+        <h2 class="title is-3">Benchmark Overview</h2> 
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-half">  
+        <img id="sr-op-results" width="100%" src="./static/images/sr_op.png" alt="Support Relations and Object Permanence Results">
+        <div style="width: 100%; margin: 1rem auto;">
+          <div class="content has-text-justified">
+            <p><b>Support Relations and Object Permanence:</b> Detailed evaluation results showing how different models perform on scenarios involving object stability and occlusion understanding.</p>
+          </div>
+        </div>
+      </div>
+      <div class="column is-half">  
+        <img id="mpsp-results" width="100%" src="./static/images/mpsp.png" alt="Motion Physics and Scale/Perspective Results">
+        <div style="width: 100%; margin: 1rem auto;">
+          <div class="content has-text-justified">
+            <p><b>Motion Physics and Scale/Perspective:</b> Analysis of model performance on scenarios involving gravity, collision dynamics, and spatial relationship understanding.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">  
+        <img id="qual-vlm" width="80%" src="./static/images/qual.png" alt="Qualitative Examples for VLM Question Answering">
+        <div style="width: 80%; margin: 1rem auto;">
+          <div class="content has-text-justified">
+            <p><b>Qualitative Examples of the Language-based subset of WorldBench.</b> VLMs are given access to a 9 frame video (same as what is inputted to COSMOS) and ask to answer a True/False or multiple choice question based on the video and future predictions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Demo Section Commented Out -->
+<!-- 
+<section class="section" id="demo">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-fifths">
+        <h2 class="title is-3">
+          <img id="demo_icon" width="5%" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjAiIGZpbGw9IiNGRkQ3MDAiLz4KICA8dGV4dCB4PSIyNSIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj4/PC90ZXh0Pgo8L3N2Zz4K"> 
+          Example Scenarios
+        </h2> 
+        <p class="subtitle is-5">Explore sample videos from our benchmark covering diverse physics scenarios</p>
+      </div>
+    </div>
+
+    Category Selection with 4 options 
+    <div class="columns is-centered has-text-centered" style="margin-bottom: 2rem;">
+      <div class="column is-four-fifths">
+        <div class="tabs is-centered is-large is-boxed">
+          <ul>
+            <li class="tab-link is-active" data-category="motion">
+              <a><strong>Motion Physics</strong></a>
+            </li>
+            <li class="tab-link" data-category="permanence">
+              <a><strong>Object Permanence</strong></a>
+            </li>
+            <li class="tab-link" data-category="support">
+              <a><strong>Support Relations</strong></a>
+            </li>
+            <li class="tab-link" data-category="perspective">
+              <a><strong>Scale/Perspective</strong></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    Demo Content 
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-six-fifths">
+        <div class="box">
+          Scenario Description 
+          <div style="margin-bottom: 1rem;">
+            <h3 id="scenario-title" class="title is-4" style="color: #363636;">Bouncing Ball Scenario</h3>
+            <p id="scenario-description" class="subtitle is-6">A sphere falls freely under gravity, testing the model's understanding of basic physics like gravity, collision, and energy conservation.</p>
+          </div>
+
+          Video Display 
+          <div class="video-wrapper">
+            <video id="demo-video" class="benchmark-video" controls preload="metadata" playsinline>
+              Motion Physics videos 
+              <source src="./static/videos/bouncing_ball.mp4" type="video/mp4" data-category="motion">
+              <source src="./static/videos/two_object_fall.mp4" type="video/mp4" data-category="motion">
+              
+              Object Permanence videos 
+              <source src="./static/videos/block_obj.mp4" type="video/mp4" data-category="permanence">
+              <source src="./static/videos/columns.mp4" type="video/mp4" data-category="permanence">
+              
+              Support Relations videos 
+              <source src="./static/videos/dominoes.mp4" type="video/mp4" data-category="support">
+              <source src="./static/videos/table_drop.mp4" type="video/mp4" data-category="support">
+              
+              Scale/Perspective videos 
+              <source src="./static/videos/sphere_towards.mp4" type="video/mp4" data-category="perspective">
+              <source src="./static/videos/sphere_away.mp4" type="video/mp4" data-category="perspective">
+              
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          
+          Scenario Details 
+          <div style="margin-top: 2rem;">
+            <div class="columns is-multiline">
+              <div class="column is-half">
+                <div class="box has-background-light">
+                  <h4 class="title is-6">Ground Truth</h4>
+                  <p class="is-size-7">Physics simulation ensures accurate dynamics</p>
+                </div>
+              </div>
+              <div class="column is-half">
+                <div class="box has-background-light">
+                  <h4 class="title is-6">Model Prediction</h4>
+                  <p class="is-size-7">Evaluated using segmentation accuracy</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+-->
+
+<section class="section" id="leaderboard">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered m-6">
+      <div class="column is-full has-text-centered content">
+        <div class="column is-five-fifths">
+        <h2 class="title is-3"><img id="painting_icon" width="5%" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjUiIGN5PSIxNSIgcj0iMTAiIGZpbGw9IiNGRkQ3MDAiLz4KPHJlY3QgeD0iMTUiIHk9IjIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIGZpbGw9IiNGRkQ3MDAiLz4KICA8dGV4dCB4PSIyNSIgeT0iMzIiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iYmxhY2siIHRleHQtYW5jaG9yPSJtaWRkbGUiPjE8L3RleHQ+CiAgPHJlY3QgeD0iMTAiIHk9IjQwIiB3aWR0aD0iMzAiIGhlaWdodD0iNSIgZmlsbD0iIzMzNzNkYyIvPgo8L3N2Zz4K"> Results</h2> 
+        </div>
+        <div class="content">
+          <div class="content has-text-justified">
+            <p>
+              We report evaluation results on WorldBench across world foundation models and vision-language models. Results show significant gaps in physical understanding across all tested models.
+            </p>
+          </div>    
+
+          <!-- Cosmos Results -->
+          <h3 class="title is-4">World Foundation Models (Video Generation)</h3>
+<table id="table1" class="js-sort-table">
+  <thead>
+    <tr>
+      <th class="js-sort-string"><strong>Model</strong></th>
+      <th class="js-sort-number"><strong>Motion Physics</strong></th>
+      <th class="js-sort-number"><strong>Object Permanence</strong></th>
+      <th class="js-sort-number"><strong>Support Relations</strong></th>
+      <th class="js-sort-number"><strong>Scale/Perspective</strong></th>
+      <th class="js-sort-number"><strong>Overall mIoU</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Cosmos Autoregressive 5B</td>
+      <td>0.2901</td>
+      <td>0.4086</td>
+      <td>0.5446</td>
+      <td>0.4316</td>
+      <td>0.4225</td>
+    </tr>
+    <tr>
+      <td>Cosmos Diffusion 7B (33f)</td>
+      <td>0.3219</td>
+      <td>0.4747</td>
+      <td>0.4409</td>
+      <td>0.4959</td>
+      <td>0.4508</td>
+    </tr>
+    <tr>
+      <td>Cosmos Diffusion 7B (121f)</td>
+      <td>0.1696</td>
+      <td>0.3229</td>
+      <td>0.2523</td>
+      <td>0.1615</td>
+      <td>0.2573</td>
+    </tr>
+  </tbody>
+</table>
+
+          <!-- VLM Results -->
+          <h3 class="title is-4" style="margin-top: 2rem;">Vision-Language Models (Text Responses)</h3>
+<table id="table2" class="js-sort-table">
+  <thead>
+    <tr>
+      <th class="js-sort-string"><strong>Model</strong></th>
+      <th class="js-sort-string"><strong>Type</strong></th>
+      <th class="js-sort-number"><strong>Motion Physics</strong></th>
+      <th class="js-sort-number"><strong>Object Permanence</strong></th>
+      <th class="js-sort-number"><strong>Support Relations</strong></th>
+      <th class="js-sort-number"><strong>Scale/Perspective</strong></th>
+      <th class="js-sort-number"><strong>Overall Accuracy</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Closed Models -->
+    <tr style="background-color:rgba(255,200,200,0.3);">
+      <td>Claude Sonnet 4</td>
+      <td>Closed</td>
+      <td>0.7096</td>
+      <td>0.4286</td>
+      <td>0.4285</td>
+      <td>0.5526</td>
+      <td>0.5027</td>
+    </tr>
+    <tr style="background-color:rgba(255,200,200,0.3);">
+      <td>Gemini 2.5 Pro</td>
+      <td>Closed</td>
+      <td>0.6774</td>
+      <td>0.4048</td>
+      <td>0.5714</td>
+      <td>0.5000</td>
+      <td>0.4972</td>
+    </tr>
+    <tr style="background-color:rgba(255,200,200,0.3);">
+      <td>Gemini 2.5 Flash</td>
+      <td>Closed</td>
+      <td>0.6452</td>
+      <td>0.3571</td>
+      <td>0.4643</td>
+      <td>0.6053</td>
+      <td>0.4751</td>
+    </tr>
+    <tr style="background-color:rgba(255,200,200,0.3);">
+      <td>GPT 4.1</td>
+      <td>Closed</td>
+      <td>0.3781</td>
+      <td>0.2619</td>
+      <td>0.5000</td>
+      <td>0.5000</td>
+      <td>0.3701</td>
+    </tr>
+    
+    <!-- Open Models -->
+    <tr style="background-color:rgba(200,200,255,0.3);">
+      <td>Qwen2.5-VL-32B</td>
+      <td>Open</td>
+      <td>0.8710</td>
+      <td>0.2738</td>
+      <td>0.5714</td>
+      <td>0.4737</td>
+      <td>0.4641</td>
+    </tr>
+    <tr style="background-color:rgba(200,200,255,0.3);">
+      <td>GLM 4.1V 9B</td>
+      <td>Open</td>
+      <td>0.6674</td>
+      <td>0.3453</td>
+      <td>0.6071</td>
+      <td>0.4473</td>
+      <td>0.4641</td>
+    </tr>
+    <tr style="background-color:rgba(200,200,255,0.3);">
+      <td>Qwen2.5-VL-72B</td>
+      <td>Open</td>
+      <td>0.5806</td>
+      <td>0.3333</td>
+      <td>0.5714</td>
+      <td>0.4211</td>
+      <td>0.4309</td>
+    </tr>
+    <tr style="background-color:rgba(200,200,255,0.3);">
+      <td>Qwen2.5-VL-7B</td>
+      <td>Open</td>
+      <td>0.5161</td>
+      <td>0.2381</td>
+      <td>0.5357</td>
+      <td>0.4474</td>
+      <td>0.3737</td>
+    </tr>
+    <tr style="background-color:rgba(200,200,255,0.3);">
+      <td>Mistral Small 3.2 24B</td>
+      <td>Open</td>
+      <td>0.4838</td>
+      <td>0.2500</td>
+      <td>0.3571</td>
+      <td>0.3684</td>
+      <td>0.3315</td>
+    </tr>
+    <tr style="background-color:rgba(200,200,255,0.3);">
+      <td>Llama-3.2-11B-Vision</td>
+      <td>Open</td>
+      <td>0.5161</td>
+      <td>0.1548</td>
+      <td>0.3571</td>
+      <td>0.3421</td>
+      <td>0.2873</td>
+    </tr>
+    
+  </tbody>
+</table>
+
+          <div class="model-labels-container" style="margin-top: 1rem;">
+            <span class="leaderboard-label" style="background-color: rgba(200, 200, 255, 1); margin-right: 30px;">Open-Source</span>
+            <span class="leaderboard-label" style="background-color: rgba(255, 200, 200, 1);">Proprietary</span>
+          </div>
+          
+          <!-- mIoU over Time Results -->
+          <h3 class="title is-4" style="margin-top: 2rem;">Performance Over Time</h3>
+          <div class="columns is-centered has-text-centered">
+            <div class="column is-four-fifths">  
+              <img id="miou-time-results" width="100%" src="./static/images/miou_time.png" alt="mIoU Performance Over Time">
+              <div style="width: 100%; margin: 1rem auto;">
+                <div class="content has-text-justified">
+                  <p><b>mIoU results over time.</b> The foreground mIoU is inversely related with how far in the future the model is predicting. There is a sharp drop off after frame 9 when the model first begins predicting and this flattens after approx. 30 frames for the diffusion model and 15 frames for the auto-regressive model. The shaded region shows 1 standard deviation.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-fifths">
+        <h2 class="title is-3">Key Findings</h2> 
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-left">
+          <div class="columns is-multiline">
+            <div class="column is-half">
+              <div class="box">
+                <h3 class="title is-5" style="color: #ff7043;">⚠️ Limited Physical Understanding</h3>
+                <p>Current world foundation models show significant gaps in physics understanding, with the best model achieving only 45% mIoU on our benchmark.</p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="box">
+                <h3 class="title is-5" style="color: #3373dc;">📉 Performance Degrades Over Time</h3>
+                <p>Model accuracy drops sharply after initial frames, with performance inversely correlated to prediction horizon.</p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="box">
+                <h3 class="title is-5" style="color: #48c774;">🤖 VLMs Struggle with Physics</h3>
+                <p>Vision-language models perform only slightly better than chance on physics reasoning, highlighting fundamental limitations.</p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="box">
+                <h3 class="title is-5" style="color: #ffdf43;">🎯 Object Permanence is Hardest</h3>
+                <p>All models struggle most with object permanence scenarios, indicating difficulty with temporal consistency and object tracking.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Methodology</h2>
+        <div class="content has-text-justified">
+          <h3 class="title is-4">Benchmark Design</h3>
+          <p>
+            WorldBench uses <strong>Kubric</strong> (PyBullet + Blender) to generate 425 physically accurate video sequences across four categories. Each video is 132 frames long and includes ground truth depth, normals, object segmentations, and optical flow. We evaluate models by comparing generated video segmentations from SAM2 against ground truth physics simulations.
+          </p>
+          
+          <h3 class="title is-4">Evaluation Metrics</h3>
+          <div class="columns">
+            <div class="column">
+              <div class="box has-background-light">
+                <h4 class="title is-6">Foreground mIoU</h4>
+                <p>Measures object tracking accuracy by comparing predicted vs. ground truth segmentation masks using SAM2.</p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box has-background-light">
+                <h4 class="title is-6">Background RMSE</h4>
+                <p>Evaluates background consistency to ensure models maintain scene coherence during object motion.</p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="box has-background-light">
+                <h4 class="title is-6">Language QA Accuracy</h4>
+                <p>Tests physics reasoning through natural language questions on a subset of 181 videos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{upadhyay2025worldbench,
+    title={How Close are World Models to the Physical World?},
+    author={Upadhyay, Rishi and Zhang, Howard and Lu, Zhirong and Sundaram, Lakshman and Agrawal, Ayush and Wu, Yilin and Ba, Yunhao and Wong, Alex and de Melo, Celso M and Kadambi, Achuta},
+    journal={arXiv preprint arXiv:2501.xxxxx},
+    year={2025}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is adapted from <a rel="license"
+            href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> and <a rel="license"
+            href="https://gligen.github.io/">GLIGEN</a>, licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Tab switching functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const tabLinks = document.querySelectorAll('.tab-link');
+    const scenarioTitle = document.getElementById('scenario-title');
+    const scenarioDescription = document.getElementById('scenario-description');
+    const demoVideo = document.getElementById('demo-video');
+    
+    const scenarios = {
+        'motion': {
+            title: 'Motion Physics Scenario',
+            description: 'Testing understanding of gravity, collision, momentum, and energy conservation through bouncing balls and projectile motion.',
+            video: './static/videos/bouncing_ball.mp4'
+        },
+        'permanence': {
+            title: 'Object Permanence Scenario', 
+            description: 'Evaluating whether models understand that objects continue to exist when occluded by walls, columns, or other objects.',
+            video: './static/videos/block_obj.mp4'
+        },
+        'support': {
+            title: 'Support Relations Scenario',
+            description: 'Assessing comprehension of stability, balance, and how objects physically support one another in various configurations.',
+            video: './static/videos/dominoes.mp4'
+        },
+        'perspective': {
+            title: 'Scale/Perspective Scenario',
+            description: 'Testing understanding of how object size and spatial relationships change with camera distance and viewpoint.',
+            video: './static/videos/sphere_towards.mp4'
+        }
+    };
+
+    tabLinks.forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            const category = this.getAttribute('data-category');
+            
+            // Update tab appearance
+            tabLinks.forEach(t => t.classList.remove('is-active'));
+            this.classList.add('is-active');
+            
+            // Update scenario content
+            if (scenarios[category]) {
+                scenarioTitle.textContent = scenarios[category].title;
+                scenarioDescription.textContent = scenarios[category].description;
+                
+                // Update video source
+                if (demoVideo && scenarios[category].video) {
+                    demoVideo.src = scenarios[category].video;
+                    demoVideo.load(); // Reload the video with new source
+                }
+            }
+        });
+    });
+});
+</script>
+
+</body>
+</html>
