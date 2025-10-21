@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="PerfectPhysics: A Challenge Benchmark for Physical Reasoning and Prediction">
+  <meta name="keywords" content="Physics, Benchmark, Evaluation, Video Generation, World Models">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PerfectPhysics Challenge</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <style>
+  .leaderboard-label {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+  .hero .title {
+    letter-spacing: 0.3px;
+  }
+  .section .content p {
+    font-size: 1.05rem;
+  }
+  .list-step {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+  .list-step .icon {
+    margin-right: 0.75rem;
+    color: #3273dc;
+  }
+  .cta-buttons .button + .button {
+    margin-left: 0.75rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  .js-sort-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .js-sort-table th,
+  .js-sort-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
+  .js-sort-table th {
+    background-color: #f2f2f2;
+    cursor: pointer;
+  }
+  .js-sort-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  .js-sort-table tr:hover {
+    background-color: #f5f5f5;
+  }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1">PerfectPhysics Challenge</h1>
+          <p class="subtitle is-5">A benchmark and challenge for physical reasoning and video prediction</p>
+          <div class="cta-buttons" style="margin-top: 1rem;">
+            <a href="https://huggingface.co/datasets/worldbenchmark/PerfectPhysics" class="button is-dark is-rounded">
+                <span class="icon"><i class="fa-solid fa-paper-plane"></i></span>
+                <span>Data</span>
+              </a>
+            <a href="https://forms.gle/8kViFpPgRyBy8RTq6" class="button is-dark is-rounded">
+              <span class="icon"><i class="fa-solid fa-paper-plane"></i></span>
+              <span>Submit Results</span>
+            </a>
+            <a href="mailto:contactworldbench@gmail.com" class="button is-link is-light is-rounded">
+              <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+              <span>Contact Us</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="description">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Benchmark Description</h2>
+        <div class="content has-text-justified">
+          <p>
+            PerfectPhysics is an evaluation suite which tests how well world models and video generations adhere to well-known physics constants and laws. </p>
+           <p>
+        The benchmark includes curated physics experiments spanning from motion physics (e.g. gravity, projectile motion) to fluid dynamics (e.g. viscosity, fluid motion).  Each scenario will have initial context frames and will require models to generate the future frames. Core physics constants such as gravitation acceleration, viscosity, friction, and more will then be estimated from generated videos. Each weekly challenge will focus on a different physics experiment and will be evaluated on a different set of physics constants.
+           </p><p>
+            Submissions will be evaluated using an internal pipeline which differs depending on the experiment. For example, motion physics experiments will typically use a SAM-based segmentation mask to determine depth-calibrated position for accurate gravity estimation. The goal is to measure whether the video generation models respect physical constraints (such as free-fall gravitational acceleration, friction, viscosity, etc.) across the generated frames.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="weekly-challenge">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <div style="border: 2px solid #ff3860; border-radius: 8px; padding: 1.5rem;">
+          <h2 class="title is-3">Current Weekly Challenge</h2>
+          <div class="content has-text-justified">
+            <h4 class="title is-4">Week 1 (10/21 - 10/27): Free Fall</h4>
+            <p>
+              Our first weekly challenge is focused on free fall physics. The videos depict various objects being released from rest and falling under the influence of gravity.
+            </p><p>
+              Videos will be evaluated by extracting object locations and estimating acceleration due to gravity.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="participate">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">How to Participate</h2>
+        <div class="content has-text-left">
+          <div class="list-step">
+            <span class="icon"><i class="fa-solid fa-download"></i></span>
+            <p><strong>1. Obtain the evaluation set</strong>: Download the PerfectPhysics input videos for the current week from <a href="https://huggingface.co/datasets/worldbenchmark/PerfectPhysics">HuggingFace</a>.</p>          </div>
+          <div class="list-step">
+            <span class="icon"><i class="fa-solid fa-gears"></i></span>
+            <p><strong>2. Run your model</strong>: Generate future frames from the provided context frames. Depending on the input size of your model, you may choose to change the input resolution of the video. Just make sure that the output video is in the same aspect ratio and resolution, as our evaluations are calibrated according to our input video resolution and aspect ratio. We recommend zero-padding and downsampling/upsampling rather than cropping to ensure the best results.</p>          </div>
+          <div class="list-step">
+            <span class="icon"><i class="fa-solid fa-file-zipper"></i></span>
+            <p><strong>3. Package outputs</strong>: Create a single compressed file containing your generated videos.</p>
+        </div>
+          <div class="list-step">
+            <span class="icon"><i class="fa-solid fa-paper-plane"></i></span>
+            <p><strong>4. Submit</strong>: Upload your file via the submission form which will ask for your team name, affiliation (optional), contact email, as well as the framerate of your generated output video frames.</p>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-fifths">
+        <h2 class="title is-3">Results</h2>
+      </div>
+    </div>
+    <p>We evaluate existing world models and image2video models on our benchmark (containing more videos than individual weekly challenges). We summarize our results below:</p>
+
+    <div class="content" style="margin-top: 1rem;">
+      <h3 class="title is-4">Video2Video models</h3>
+      <table class="js-sort-table">
+        <thead>
+          <tr>
+            <th class="js-sort-string"><strong>Model</strong></th>
+            <th class="js-sort-number"><strong>Free-Fall Gravity</strong></th>
+            <th class="js-sort-number"><strong>Parabolic Motion Gravity</strong></th>
+            <th class="js-sort-number"><strong>Honey Viscosity</strong></th>
+            <th class="js-sort-number"><strong>Glycerine Viscosity</strong></th>
+          </tr>
+          <tr>
+            <td>Ground Truth</td>
+            <td>9.81 m/s^2</td>
+            <td>9.81 m/s^2</td>
+            <td>13.61 Pa.s</td>
+            <td>1.44 Pa.s</td>
+          </tr>
+          <tr>
+            <td>Cosmos-Predict2.5</td>
+            <td>3.992 &plusmn; 3.622 m/s^2</td>
+            <td>4.760 &plusmn; 4.653 m/s^2</td>
+            <td>1.995 &plusmn; 1.192 Pa.s</td>
+            <td>1.264 &plusmn; 2.787 Pa.s</td>
+          </tr>
+          <tr>
+            <td>Cosmos-Predict2</td>
+            <td>Coming Soon</td>
+            <td>Coming Soon</td>
+            <td>Coming Soon</td>
+            <td>Coming Soon</td>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="content" style="margin-top: 2rem;">
+      <h3 class="title is-4">Image2Video models</h3>
+      <table class="js-sort-table">
+        <thead>
+          <tr>
+            <th class="js-sort-string"><strong>Model</strong></th>
+            <th class="js-sort-number"><strong>Free-Fall Gravity</strong></th>
+            <th class="js-sort-number"><strong>Parabolic Motion Gravity</strong></th>
+            <th class="js-sort-number"><strong>Honey Viscosity</strong></th>
+            <th class="js-sort-number"><strong>Glycerine Viscosity</strong></th>
+          </tr>
+          <tr>
+            <td>Ground Truth</td>
+            <td>9.81 m/s^2</td>
+            <td>9.81 m/s^2</td>
+            <td>13.61 Pa.s</td>
+            <td>1.44 Pa.s</td>
+          </tr>
+          <tr>
+            <td>Wan 2.2</td>
+            <td>-0.078 &plusmn; 1.097 m/s^2</td>
+            <td>0.386 &plusmn; 2.572 m/s^2</td>
+            <td>Coming Soon</td>
+            <td>Coming Soon</td>
+          </tr>
+          <tr>
+            <td>Hunyuan World</td>
+            <td>Coming Soon</td>
+            <td>Coming Soon</td>
+            <td>Coming Soon</td>
+            <td>Coming Soon</td>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="content" style="margin-top: 2rem;">
+      <h3 class="title is-4">Community Leaderboard</h3>
+      <table class="js-sort-table">
+        <thead>
+          <tr>
+            <th class="js-sort-string"><strong>Team</strong></th>
+            <th class="js-sort-string"><strong>Model</strong></th>
+            <th class="js-sort-number"><strong>Free-Fall Gravity</strong></th>
+            <th class="js-sort-number"><strong>Parabolic Motion Gravity</strong></th>
+            <th class="js-sort-number"><strong>Honey Viscosity</strong></th>
+            <th class="js-sort-number"><strong>Glycerine Viscosity</strong></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+</section>
+
+<section class="section" id="submission">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Submission and Support</h2>
+        <div class="content has-text-justified">
+          <p>
+            Use the link below to submit your results. After submission, our evaluation server will validate your
+            files and compute metrics. You will receive a confirmation email with a tracking ID.
+          </p>
+        </div>
+        <div style="margin-top: 0.5rem;">
+          <a href="https://forms.gle/replace-with-your-form" class="button is-dark is-rounded" target="_blank" rel="noopener">
+            <span class="icon"><i class="fa-solid fa-link"></i></span>
+            <span>Open Submission Form</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Contact Us</h2>
+        <div class="content has-text-justified">
+          <p>
+            Questions about the benchmark or submission process? Reach out and we will get back to you promptly.
+          </p>
+        </div>
+        <div>
+          <a href="mailto:contactworldbench@gmail.com" class="button is-link is-light is-rounded">
+            <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+            <span>contactworldbench@gmail.com</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is adapted from <a rel="license" href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> and
+            <a rel="license" href="https://gligen.github.io/">GLIGEN</a>, licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+            This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
+
+
