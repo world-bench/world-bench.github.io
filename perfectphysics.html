@@ -112,7 +112,7 @@
           <p>
             PerfectPhysics is an evaluation suite which tests how well world models and video generations adhere to well-known physics constants and laws. </p>
            <p>
-        The benchmark includes curated physics experiments spanning from motion physics (e.g. gravity, projectile motion) to fluid dynamics (e.g. viscosity, fluid motion).  Each scenario will have initial context frames and will require models to generate the future frames. Core physics constants such as gravitation acceleration, viscosity, friction, and more will then be estimated from generated videos. Each weekly challenge will focus on a different physics experiment and will be evaluated on a different set of physics constants.
+        The benchmark includes curated physics experiments spanning from motion physics (e.g. gravity, projectile motion) to fluid dynamics (e.g. viscosity, fluid motion).  Each scenario will have initial context frames and will require models to generate the future frames. Core physics constants such as gravitation acceleration, viscosity, friction, and more will then be estimated from generated videos. Each challenge will focus on a different physics experiment and will be evaluated on a different set of physics constants.
            </p><p>
             Submissions will be evaluated using an internal pipeline which differs depending on the experiment. For example, motion physics experiments will typically use a SAM-based segmentation mask to determine depth-calibrated position for accurate gravity estimation. The goal is to measure whether the video generation models respect physical constraints (such as free-fall gravitational acceleration, friction, viscosity, etc.) across the generated frames.
           </p>
@@ -127,11 +127,11 @@
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <div style="border: 2px solid #ff3860; border-radius: 8px; padding: 1.5rem;">
-          <h2 class="title is-3">Current Weekly Challenge</h2>
+          <h2 class="title is-3">Current Challenge</h2>
           <div class="content has-text-justified">
-            <h4 class="title is-4">Week 1 (10/21 - 10/27): Free Fall</h4>
+            <h4 class="title is-4">Challenge 1: Free Fall</h4>
             <p>
-              Our first weekly challenge is focused on free fall physics. The videos depict various objects being released from rest and falling under the influence of gravity.
+              Our first challenge is focused on free fall physics. The videos depict various objects being released from rest and falling under the influence of gravity.
             </p><p>
               Videos will be evaluated by extracting object locations and estimating acceleration due to gravity.
             </p>
